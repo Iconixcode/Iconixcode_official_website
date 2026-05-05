@@ -11,9 +11,35 @@ const spaceGrotesk = Space_Grotesk({
 });
 
 export const metadata: Metadata = {
-  title: `${company.name} | Coming Soon`,
+  title: "Iconixcode | Software Engineering Solutions",
   description:
-    "Iconixcode is a software engineering solutions company building modern digital products, websites, systems, and scalable software platforms.",
+    "Iconixcode is a software engineering solutions company building modern websites, digital products, business systems, and scalable software platforms.",
+  keywords: [
+    "Iconixcode",
+    "software engineering solutions",
+    "web development Sri Lanka",
+    "software company Sri Lanka",
+    "custom software development",
+    "Next.js development",
+    "website development",
+    "digital product development",
+    "business systems development",
+  ],
+  authors: [{ name: "Iconixcode" }],
+  creator: "Iconixcode",
+  publisher: "Iconixcode",
+  metadataBase: new URL("https://iconixcode.com"),
+  alternates: {
+    canonical: "https://iconixcode.com",
+  },
+  openGraph: {
+    title: "Iconixcode | Software Engineering Solutions",
+    description:
+      "Iconixcode builds modern websites, digital products, business systems, and scalable software platforms.",
+    url: "https://iconixcode.com",
+    siteName: "Iconixcode",
+    type: "website",
+  },
 };
 
 export default function RootLayout({
