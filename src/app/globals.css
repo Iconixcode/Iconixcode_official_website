@@ -28,3 +28,71 @@ a {
   background: rgba(255, 255, 255, 0.16);
   color: white;
 }
+
+/* --- Design tokens and compatibility utilities for migrated components --- */
+:root {
+  --ink: #020817;
+  --navy-950: #001868;
+  --navy-600: #09294a;
+  --navy-500: #0b3b6a;
+  --cyan-400: #1ECDFD;
+  --cyan-300: #30d6f8;
+  --silver-200: #d1d8de;
+  --silver-300: #bfc9d1;
+  --silver-400: #9aa6b3;
+  --silver-500: #7b8793;
+  --silver-600: #59626b;
+}
+
+/* Background helpers */
+.bg-ink { background-color: var(--ink); }
+.bg-ink\/70 { background-color: rgba(2, 8, 23, 0.7); }
+.bg-ink\/95 { background-color: rgba(2, 8, 23, 0.95); }
+.bg-ink\/80 { background-color: rgba(2, 8, 23, 0.8); }
+.bg-ink\/50 { background-color: rgba(2, 8, 23, 0.5); }
+.bg-navy-950\/80 { background-color: rgba(0, 24, 104, 0.8); }
+
+/* Text colors */
+.text-silver-400 { color: var(--silver-400); }
+.text-silver-500 { color: var(--silver-500); }
+.text-silver-300 { color: var(--silver-300); }
+.text-silver-200 { color: var(--silver-200); }
+.text-silver-600 { color: var(--silver-600); }
+
+/* Gradient text */
+.text-gradient-cyan {
+  background-image: linear-gradient(90deg, var(--cyan-400), #00a3d9);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Glass utility */
+.glass {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.06);
+  backdrop-filter: blur(8px);
+}
+.glass-cyan {
+  background: rgba(30,205,253,0.04);
+  border: 1px solid rgba(30,205,253,0.08);
+  backdrop-filter: blur(8px);
+}
+
+/* Layout helpers */
+.section-pad { padding-left: 1.25rem; padding-right: 1.25rem; }
+.container-x { width: 100%; max-width: 1120px; margin-left: auto; margin-right: auto; padding-left: 1.25rem; padding-right: 1.25rem; }
+
+/* Font helpers */
+.font-orbitron { font-family: 'Space Grotesk', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; }
+.font-display { font-family: 'Space Grotesk', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; }
+
+/* Tracking */
+.tracking-tightest { letter-spacing: -0.02em; }
+
+/* Small utilities */
+.text-gradient-cyan { font-weight: 600; }
+
+/* Scrollbar */
+*::-webkit-scrollbar { width: 10px; height: 10px; }
+*::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.06); border-radius: 9999px; }
