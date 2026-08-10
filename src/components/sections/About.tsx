@@ -1,31 +1,6 @@
-import { Target, Eye, Sparkles } from 'lucide-react';
 import Reveal from '@/components/Reveal';
 import GlowOrb from '@/components/GlowOrb';
-
-const pillars = [
-  {
-    icon: Target,
-    title: 'Our Mission',
-    text: 'To engineer reliable, scalable software that turns ambitious ideas into products people love to use.',
-  },
-  {
-    icon: Eye,
-    title: 'Our Vision',
-    text: 'A world where every business — regardless of size — has access to world-class engineering.',
-  },
-  {
-    icon: Sparkles,
-    title: 'Why ICONIXCODE',
-    text: 'We exist to bridge the gap between design and engineering, shipping products that feel as good as they look.',
-  },
-];
-
-const stats = [
-  { n: '5+', l: 'Successfull Projects' },
-  { n: '99.9%', l: 'Uptime delivered' },
-  { n: '100%', l: 'Customer Feedback' },
-  
-];
+import aboutConfig from '@/config/about';
 
 export default function About() {
   return (
@@ -58,7 +33,7 @@ export default function About() {
         </Reveal>
 
         <div className="mt-10 flex flex-col gap-4 text-left">
-          {pillars.map((p, i) => (
+          {aboutConfig.pillars.map((p, i) => (
             <Reveal key={p.title} delay={0.24 + i * 0.1}>
               <div className="group flex gap-4 rounded-2xl border border-white/10 bg-white/[0.02] p-4 transition-colors hover:border-cyan-400/30 hover:bg-cyan-500/[0.03]">
                 <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-cyan-400/20 bg-cyan-500/[0.06] text-cyan-300 transition-shadow group-hover:shadow-[0_0_16px_rgba(30,205,253,0.3)]">
@@ -74,7 +49,7 @@ export default function About() {
         </div>
 
         <div className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-4">
-          {stats.map((s, i) => (
+          {aboutConfig.stats.map((s, i) => (
             <Reveal key={s.l} delay={0.3 + i * 0.08}>
               <div className="glass rounded-2xl p-5 transition-colors hover:border-cyan-400/30">
                 <div className="text-3xl font-semibold text-gradient-cyan">{s.n}</div>

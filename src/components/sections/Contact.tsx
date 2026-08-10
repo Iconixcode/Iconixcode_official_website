@@ -2,48 +2,24 @@
 
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Mail, Phone, MapPin, ArrowRight, Rocket } from 'lucide-react';
-import { FaGithub, FaLinkedinIn, FaXTwitter } from 'react-icons/fa6';
+import { ArrowRight, Rocket } from 'lucide-react';
+import contactConfig from '@/config/contact';
 import SectionHeader from '@/components/SectionHeader';
 import Reveal from '@/components/Reveal';
 import GlowOrb from '@/components/GlowOrb';
 
-const details = [
-  {
-    icon: Mail,
-    label: 'EMAIL US',
-    value: 'hello@iconixcode.dev',
-    href: 'mailto:hello@iconixcode.dev',
-  },
-  {
-    icon: Phone,
-    label: 'PHONE / WHATSAPP',
-    value: '+1 (555) 234-5678',
-    href: 'tel:+15552345678',
-  },
-  {
-    icon: MapPin,
-    label: 'LOCATION',
-    value: 'San Francisco, CA · Remote-first',
-    href: '#',
-  },
-];
-
-const socials = [
-  { icon: FaGithub, href: '#', label: 'GitHub' },
-  { icon: FaXTwitter, href: '#', label: 'X' },
-  { icon: FaLinkedinIn, href: '#', label: 'LinkedIn' },
-];
+const details = contactConfig.details;
+const socials = contactConfig.socials;
 
 export default function Contact() {
-  const [sent, setSent] = useState(false);
   const [form, setForm] = useState({ name: '', company: '', email: '', project: '' });
+  const [sent, setSent] = useState(false);
 
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setSent(true);
+    setTimeout(() => setSent(false), 2500);
     setForm({ name: '', company: '', email: '', project: '' });
-    setTimeout(() => setSent(false), 4000);
   };
 
   return (

@@ -4,15 +4,7 @@ import { useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
 import Logo from '@/components/Logo';
-
-const links = [
-  { label: 'About', href: '#about' },
-  { label: 'Solutions', href: '#solutions' },
-  { label: 'Process', href: '#process' },
-  { label: 'Projects', href: '#projects' },
-  { label: 'Clients', href: '#testimonials' },
-  { label: 'Contact', href: '#contact' },
-];
+import navigation from '@/config/navigation';
 
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
@@ -48,7 +40,7 @@ export default function Header() {
           <Logo onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} />
 
           <div className="hidden items-center gap-1 md:flex">
-            {links.map((l) => (
+            {navigation.map((l) => (
               <button
                 key={l.href}
                 onClick={() => go(l.href)}
@@ -90,7 +82,7 @@ export default function Header() {
             className="overflow-hidden border-b border-white/10 bg-ink/95 backdrop-blur-xl md:hidden"
           >
             <div className="container-x section-pad flex flex-col gap-1 py-4">
-              {links.map((l) => (
+              {navigation.map((l) => (
                 <button
                   key={l.href}
                   onClick={() => go(l.href)}

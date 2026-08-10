@@ -2,43 +2,11 @@
 
 import { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { Lightbulb, PenTool, Code2, Rocket, type LucideIcon } from 'lucide-react';
+import { Rocket } from 'lucide-react';
 import SectionHeader from '@/components/SectionHeader';
 import GlowOrb from '@/components/GlowOrb';
-
-type Step = {
-  num: string;
-  icon: LucideIcon;
-  title: string;
-  desc: string;
-};
-
-const steps: Step[] = [
-  {
-    num: '01',
-    icon: Lightbulb,
-    title: 'Share Your Idea',
-    desc: 'We listen, ask the right questions, and shape your vision into a clear product brief with defined goals and scope.',
-  },
-  {
-    num: '02',
-    icon: PenTool,
-    title: 'Plan & Design',
-    desc: 'Architecture, wireframes, and polished UI — a blueprint engineered for scale before a single line of production code.',
-  },
-  {
-    num: '03',
-    icon: Code2,
-    title: 'Develop & Build',
-    desc: 'Senior engineers build in agile sprints with continuous integration, testing, and transparent progress updates.',
-  },
-  {
-    num: '04',
-    icon: Rocket,
-    title: 'Launch & Grow',
-    desc: 'We deploy, monitor, and iterate — shipping to production with zero downtime and ongoing support as you scale.',
-  },
-];
+import processSteps from '@/config/processSteps';
+import type { Step } from '@/config/processSteps';
 
 export default function Process() {
   const ref = useRef<HTMLDivElement>(null);
@@ -82,7 +50,7 @@ export default function Process() {
 
           {/* Steps */}
           <div className="flex flex-col gap-12 md:gap-20">
-            {steps.map((step, i) => {
+            {processSteps.map((step, i) => {
               const left = i % 2 === 0;
               return (
                 <div key={step.num} className="relative">

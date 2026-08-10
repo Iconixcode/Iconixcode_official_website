@@ -1,32 +1,9 @@
 "use client";
 
-import { Mail } from 'lucide-react';
-import { FaGithub, FaLinkedinIn, FaXTwitter } from 'react-icons/fa6';
 import Logo from '@/components/Logo';
-
-const quickLinks = [
-  { label: 'About', href: '#about' },
-  { label: 'Process', href: '#process' },
-  { label: 'Projects', href: '#projects' },
-  { label: 'Clients', href: '#testimonials' },
-  { label: 'Contact', href: '#contact' },
-];
-
-const services = [
-  'Web Development',
-  'Mobile App Development',
-  'UI/UX Design',
-  'Custom Software',
-  'Backend / API',
-  'Cloud & Deployment',
-];
-
-const socials = [
-  { icon: FaGithub, href: '#', label: 'GitHub' },
-  { icon: FaLinkedinIn, href: '#', label: 'LinkedIn' },
-  { icon: FaXTwitter, href: '#', label: 'X' },
-  { icon: Mail, href: 'mailto:hello@iconixcode.com', label: 'Email' },
-];
+import navigation from '@/config/navigation';
+import services from '@/config/services';
+import contactConfig from '@/config/contact';
 
 export default function Footer() {
   const go = (href: string) =>
@@ -47,7 +24,7 @@ export default function Footer() {
               Engineering digital solutions from idea to launch. We build software that scales.
             </p>
             <div className="mt-6 flex gap-3">
-              {socials.map((s) => (
+              {contactConfig.socials.map((s) => (
                 <a
                   key={s.label}
                   href={s.href}
@@ -64,7 +41,7 @@ export default function Footer() {
           <div>
             <h4 className="text-sm font-semibold uppercase tracking-wider text-white">Quick Links</h4>
             <ul className="mt-4 flex flex-col gap-3">
-              {quickLinks.map((l) => (
+              {navigation.map((l) => (
                 <li key={l.href}>
                   <button
                     onClick={() => go(l.href)}
@@ -83,13 +60,13 @@ export default function Footer() {
             <h4 className="text-sm font-semibold uppercase tracking-wider text-white">Services</h4>
             <ul className="mt-4 flex flex-col gap-3">
               {services.map((s) => (
-                <li key={s}>
+                <li key={s.title}>
                   <button
                     onClick={() => go('#solutions')}
                     className="group inline-flex items-center gap-1.5 text-sm text-silver-400 transition-colors hover:text-cyan-300"
                   >
                     <span className="h-px w-0 bg-cyan-400 transition-all duration-300 group-hover:w-4" />
-                    {s}
+                    {s.title}
                   </button>
                 </li>
               ))}
