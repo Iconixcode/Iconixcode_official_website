@@ -1,13 +1,14 @@
 import type { IconType } from "react-icons";
 import type { LucideIcon } from "lucide-react";
 import { Mail, MapPin, Phone } from "lucide-react";
-import { FaGithub, FaLinkedinIn, FaXTwitter } from "react-icons/fa6";
+import { FaFacebookF, FaInstagram, FaLinkedinIn } from "react-icons/fa6";
 
 export type ContactDetail = {
   icon: LucideIcon;
   label: string;
   value: string;
   href: string;
+  external?: boolean;
 };
 
 export type SocialLink = {
@@ -20,26 +21,28 @@ export const details: ContactDetail[] = [
   {
     icon: Mail,
     label: "EMAIL US",
-    value: "hello@iconixcode.dev",
-    href: "mailto:hello@iconixcode.dev",
+    value: "hello@iconixcode.com",
+    href: "mailto:hello@iconixcode.com",
   },
   {
     icon: Phone,
     label: "PHONE / WHATSAPP",
-    value: "+1 (555) 234-5678",
-    href: "tel:+15552345678",
+    value: "+94 78 573 9319",
+    href: "https://wa.me/94785739319",
+    external: true,
   },
   {
     icon: MapPin,
     label: "LOCATION",
-    value: "San Francisco, CA · Remote-first",
-    href: "#",
+    value: "Dehiwala, Sri Lanka",
+    href: "https://maps.app.goo.gl/Xui5UctnKs9xPmJv9",
+    external: true,
   },
 ];
 
 export const socials: SocialLink[] = [
-  { icon: FaGithub, href: "#", label: "GitHub" },
-  { icon: FaXTwitter, href: "#", label: "X" },
+  { icon: FaFacebookF, href: "#", label: "Facebook" },
+  { icon: FaInstagram, href: "#", label: "Instagram" },
   { icon: FaLinkedinIn, href: "#", label: "LinkedIn" },
 ];
 

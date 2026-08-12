@@ -1,91 +1,218 @@
 "use client";
 
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowRight, Rocket } from 'lucide-react';
-import contactConfig from '@/config/contact';
-import SectionHeader from '@/components/SectionHeader';
-import Reveal from '@/components/Reveal';
-import GlowOrb from '@/components/GlowOrb';
+import { useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { ArrowRight, CheckCircle2, Loader2, Rocket } from "lucide-react";
+import contactConfig from "@/config/contact";
+import SectionHeader from "@/components/SectionHeader";
+import Reveal from "@/components/Reveal";
+import GlowOrb from "@/components/GlowOrb";
 
 const details = contactConfig.details;
 const socials = contactConfig.socials;
 
-export default function Contact() {
-  const [form, setForm] = useState({ name: '', company: '', email: '', project: '' });
-  const [sent, setSent] = useState(false);
+type FormState = {
+  name: string;
+  company: string;
+  email: string;
+  project: string;
+};
 
-  const onSubmit = (e: React.FormEvent) => {
+type FormErrors = Partial<Record<keyof FormState, string>>;
+
+const initialForm: FormState = {
+  name: "",
+  company: "",
+  email: "",
+  project: "",
+};
+
+function validateForm(form: FormState): FormErrors {
+  const errors: FormErrors = {};
+
+  if (!form.name.trim()) {
+    errors.name = "Please enter your full name.";
+  } else if (form.name.trim().length < 2) {
+    errors.name = "Name should be at least 2 characters.";
+  }
+
+  if (!form.email.trim()) {
+    errors.email = "Please enter your email address.";
+  } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email.trim())) {
+    errors.email = "Please enter a valid email address.";
+  }
+
+  if (!form.project.trim()) {
+    errors.project = "Please tell us a little about your project.";
+  } else if (form.project.trim().length < 10) {
+    errors.project = "Please add a few more details about your project.";
+  }
+
+  return errors;
+}
+
+export default function Contact() {
+  const [form, setForm] = useState<FormState>(initialForm);
+  const [errors, setErrors] = useState<FormErrors>({});
+  const [sent, setSent] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitMessage, setSubmitMessage] = useState("");
+
+  const hasErrors = Object.keys(errors).length > 0;
+
+  const updateField = (field: keyof FormState, value: string) => {
+    setForm((current) => ({ ...current, [field]: value }));
+
+    if (errors[field]) {
+      setErrors((current) => {
+        const nextErrors = { ...current };
+        delete nextErrors[field];
+        return nextErrors;
+      });
+    }
+
+    if (submitMessage) {
+      setSubmitMessage("");
+      setSent(false);
+    }
+  };
+
+  const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSent(true);
-    setTimeout(() => setSent(false), 2500);
-    setForm({ name: '', company: '', email: '', project: '' });
+
+    const nextErrors = validateForm(form);
+    setErrors(nextErrors);
+    setSubmitMessage("");
+    setSent(false);
+
+    if (Object.keys(nextErrors).length > 0) {
+      return;
+    }
+
+    try {
+      setIsSubmitting(true);
+
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(form),
+      });
+
+      const result = (await response.json()) as { message?: string };
+
+      if (!response.ok) {
+        setSubmitMessage(
+          result.message || "Unable to send your message right now. Please try again."
+        );
+        return;
+      }
+
+      setSent(true);
+      setSubmitMessage(
+        result.message ||
+          "Thanks for contacting Iconixcode. We received your message and will reach you soon."
+      );
+      setForm(initialForm);
+
+      setTimeout(() => {
+        setSent(false);
+        setSubmitMessage("");
+      }, 7000);
+    } catch {
+      setSubmitMessage("Something went wrong. Please check your connection and try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
-    <section id="contact" className="relative overflow-hidden py-24 md:py-32">
-      <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_50%_20%,#001868_0%,transparent_60%)]" />
-      <GlowOrb className="left-1/2 top-0 -translate-x-1/2" size={460} color="rgba(30,205,253,0.1)" />
+    <section
+      id="contact"
+      className="relative overflow-hidden bg-ink py-20 sm:py-24 lg:py-28"
+    >
+      <div
+        className="pointer-events-none absolute inset-0 overflow-hidden"
+        aria-hidden="true"
+      >
+        <GlowOrb
+          size={360}
+          color="rgba(30, 205, 253, 0.08)"
+          className="left-[-12%] top-[10%]"
+        />
+        <GlowOrb
+          size={420}
+          color="rgba(0, 33, 148, 0.24)"
+          className="right-[-14%] bottom-[4%]"
+        />
+      </div>
 
-      <div className="container-x section-pad">
-        {/* Centered heading */}
+      <div className="container-x section-pad relative z-10">
         <SectionHeader
           badge="Contact Us"
           title={
             <>
-              Let&apos;s Build Something{' '}
+              Let&apos;s Build Something{" "}
               <span className="text-gradient-cyan">Great</span>
             </>
           }
-          subtitle="Have a project in mind? Tell us about it. We respond within 24 hours."
+          subtitle="Have a project in mind? Tell us about it. We respond as soon as possible."
         />
 
-        {/* Two-column layout */}
         <div className="mt-14 grid gap-5 lg:grid-cols-[1fr_1.35fr]">
-          {/* ── Left column ── */}
           <div className="flex flex-col gap-4">
-            {/* Contact info cards */}
-            {details.map((d, i) => (
-              <Reveal key={d.label} delay={i * 0.08}>
+            {details.map((detail, index) => (
+              <Reveal key={detail.label} delay={index * 0.08}>
                 <a
-                  href={d.href}
+                  href={detail.href}
+                  target={detail.external ? "_blank" : undefined}
+                  rel={detail.external ? "noopener noreferrer" : undefined}
                   className="group flex items-center gap-4 rounded-2xl border border-white/[0.08] bg-[#020d2a]/70 p-4 transition-all duration-300 hover:border-cyan-400/30 hover:bg-cyan-500/[0.04]"
                 >
-                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-cyan-400/20 bg-cyan-500/[0.08] text-cyan-400 transition-shadow duration-300 group-hover:shadow-[0_0_16px_rgba(30,205,253,0.35)]">
-                    <d.icon size={19} />
+                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-cyan-400/20 bg-cyan-500/[0.08] text-cyan-400 transition-shadow duration-300 group-hover:shadow-[0_0_16px_rgba(30,205,253,0.28)]">
+                    <detail.icon size={19} />
                   </div>
-                  <div>
+
+                  <div className="min-w-0">
                     <div className="font-mono text-[10px] uppercase tracking-[0.15em] text-silver-500">
-                      {d.label}
+                      {detail.label}
                     </div>
-                    <div className="mt-0.5 text-sm font-medium text-white">{d.value}</div>
+                    <div className="mt-0.5 break-words text-sm font-medium text-white">
+                      {detail.value}
+                    </div>
                   </div>
                 </a>
               </Reveal>
             ))}
 
-            {/* Ready to start card */}
             <Reveal delay={0.28}>
               <div className="flex flex-1 flex-col justify-between rounded-2xl border border-white/[0.08] bg-[#020d2a]/70 p-5">
                 <div className="flex h-11 w-11 items-center justify-center rounded-xl border border-cyan-400/20 bg-cyan-500/[0.08] text-cyan-400">
                   <Rocket size={20} />
                 </div>
+
                 <div className="mt-4">
-                  <h3 className="text-lg font-semibold text-white">Ready to start?</h3>
+                  <h3 className="text-lg font-semibold text-white">
+                    Ready to start?
+                  </h3>
                   <p className="mt-1.5 text-sm leading-relaxed text-silver-400">
-                    Whether you have a detailed brief or just a rough concept — we&apos;re the
-                    right partner to take it from idea to impact.
+                    Whether you have a detailed brief or just a rough concept, we can help
+                    turn your idea into a reliable digital product.
                   </p>
                 </div>
+
                 <div className="mt-5 flex gap-2.5">
-                  {socials.map((s) => (
+                  {socials.map((social) => (
                     <a
-                      key={s.label}
-                      href={s.href}
-                      aria-label={s.label}
-                      className="group flex h-9 w-9 items-center justify-center rounded-lg border border-white/10 bg-white/[0.03] text-silver-400 transition-all hover:border-cyan-400/40 hover:text-cyan-300 hover:shadow-[0_0_12px_rgba(30,205,253,0.25)]"
+                      key={social.label}
+                      href={social.href}
+                      target={social.href === "#" ? undefined : "_blank"}
+                      rel={social.href === "#" ? undefined : "noopener noreferrer"}
+                      aria-label={social.label}
+                      className="group flex h-9 w-9 items-center justify-center rounded-lg border border-white/10 bg-white/[0.03] text-silver-400 transition-all hover:border-cyan-400/40 hover:text-cyan-300"
                     >
-                      <s.icon size={16} />
+                      <social.icon size={16} />
                     </a>
                   ))}
                 </div>
@@ -93,84 +220,119 @@ export default function Contact() {
             </Reveal>
           </div>
 
-          {/* ── Right column: form ── */}
           <Reveal delay={0.12}>
             <form
               onSubmit={onSubmit}
-              className="relative flex h-full flex-col gap-4 overflow-hidden rounded-2xl border border-white/[0.08] bg-[#020d2a]/70 p-6 md:p-7"
+              noValidate
+              className="relative flex h-full flex-col gap-4 overflow-hidden rounded-2xl border border-white/[0.08] bg-[#020d2a]/70 p-5 sm:p-6 md:p-7"
             >
-              {/* subtle top glow line */}
               <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-cyan-400/25 to-transparent" />
 
-              {/* Row 1: Name + Company */}
               <div className="grid gap-4 sm:grid-cols-2">
                 <FormField
                   label="FULL NAME"
                   type="text"
                   value={form.name}
-                  onChange={(v) => setForm({ ...form, name: v })}
-                  placeholder="Alex Johnson"
+                  error={errors.name}
+                  onChange={(value) => updateField("name", value)}
+                  placeholder="Your name"
                   required
                 />
+
                 <FormField
                   label="COMPANY"
                   type="text"
                   value={form.company}
-                  onChange={(v) => setForm({ ...form, company: v })}
-                  placeholder="Acme Inc."
+                  error={errors.company}
+                  onChange={(value) => updateField("company", value)}
+                  placeholder="Company name"
                 />
               </div>
 
-              {/* Row 2: Email */}
               <FormField
                 label="EMAIL"
                 type="email"
                 value={form.email}
-                onChange={(v) => setForm({ ...form, email: v })}
-                placeholder="alex@company.com"
+                error={errors.email}
+                onChange={(value) => updateField("email", value)}
+                placeholder="you@example.com"
                 required
               />
 
-              {/* Row 3: Project textarea */}
               <div className="flex flex-1 flex-col gap-2">
                 <label className="font-mono text-[10px] uppercase tracking-[0.15em] text-silver-400">
-                  TELL US ABOUT YOUR PROJECT
+                  TELL US ABOUT YOUR PROJECT <span className="text-cyan-300">*</span>
                 </label>
+
                 <textarea
                   value={form.project}
-                  onChange={(e) => setForm({ ...form, project: e.target.value })}
-                  placeholder="Describe what you're building, your timeline, and budget range..."
+                  onChange={(e) => updateField("project", e.target.value)}
+                  placeholder="Describe what you want to build, your goals, timeline, and any important details..."
                   required
-                  rows={6}
-                  className="flex-1 resize-none rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3 text-sm text-white placeholder:text-silver-600 transition-all duration-300 focus:border-cyan-400/40 focus:bg-cyan-500/[0.04] focus:outline-none focus:ring-2 focus:ring-cyan-400/15"
+                  rows={8}
+                  aria-invalid={Boolean(errors.project)}
+                  className={`min-h-[200px] resize-y rounded-xl border bg-white/[0.03] px-4 py-3 text-sm text-white placeholder:text-silver-600 transition-all duration-300 focus:bg-cyan-500/[0.04] focus:outline-none focus:ring-2 ${
+                    errors.project
+                      ? "border-red-400/50 focus:border-red-400/60 focus:ring-red-400/15"
+                      : "border-white/10 focus:border-cyan-400/40 focus:ring-cyan-400/15"
+                  }`}
                 />
+
+                {errors.project && (
+                  <p className="text-xs text-red-300">{errors.project}</p>
+                )}
               </div>
 
-              {/* Submit button */}
+              {hasErrors && (
+                <div className="rounded-xl border border-red-400/20 bg-red-500/[0.06] px-4 py-3 text-xs leading-relaxed text-red-200">
+                  Please fix the highlighted fields before sending your message.
+                </div>
+              )}
+
               <button
                 type="submit"
-                className="group relative w-full overflow-hidden rounded-xl bg-cyan-400 py-3.5 text-sm font-bold text-ink shadow-[0_0_24px_rgba(30,205,253,0.4)] transition-all duration-300 hover:bg-cyan-300 hover:shadow-[0_0_40px_rgba(30,205,253,0.7)]"
+                disabled={isSubmitting}
+                className="group relative w-full overflow-hidden rounded-xl border border-cyan-300/35 bg-[linear-gradient(135deg,rgba(30,205,253,0.95),rgba(0,33,148,0.74))] py-3.5 text-sm font-bold text-white shadow-[0_14px_34px_rgba(0,33,148,0.22)] transition-all duration-300 hover:-translate-y-0.5 hover:border-cyan-200/60 hover:brightness-110 active:translate-y-0 disabled:cursor-not-allowed disabled:opacity-65 disabled:hover:translate-y-0 disabled:hover:brightness-100"
               >
+                <span className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(255,255,255,0.34),transparent_28%)] opacity-70" />
+                <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/35 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
+
                 <span className="relative z-10 inline-flex items-center justify-center gap-2">
-                  {sent ? 'Message Sent!' : 'Send Message'}
-                  <ArrowRight
-                    size={17}
-                    className="transition-transform duration-300 group-hover:translate-x-1"
-                  />
+                  {isSubmitting ? (
+                    <>
+                      <Loader2 size={17} className="animate-spin" />
+                      Sending Message...
+                    </>
+                  ) : (
+                    <>
+                      Send Message
+                      <ArrowRight
+                        size={17}
+                        className="transition-transform duration-300 group-hover:translate-x-1"
+                      />
+                    </>
+                  )}
                 </span>
-                <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/30 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
               </button>
 
-              <AnimatePresence>
-                {sent && (
-                  <motion.p
+              <AnimatePresence mode="wait">
+                {submitMessage && (
+                  <motion.div
+                    key={sent ? "success" : "error"}
                     initial={{ opacity: 0, y: 8 }}
                     animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0 }}
-                    className="text-center text-xs text-cyan-300"
+                    exit={{ opacity: 0, y: -8 }}
+                    className={`flex items-start gap-2 rounded-xl border px-4 py-3 text-sm leading-relaxed ${
+                      sent
+                        ? "border-cyan-400/20 bg-cyan-500/[0.06] text-cyan-100"
+                        : "border-red-400/20 bg-red-500/[0.06] text-red-200"
+                    }`}
                   >
-                    Thanks — we&apos;ll be in touch within 24 hours.
-                  </motion.p>
+                    {sent && (
+                      <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-cyan-300" />
+                    )}
+                    <span>{submitMessage}</span>
+                  </motion.div>
                 )}
               </AnimatePresence>
             </form>
@@ -187,28 +349,38 @@ function FormField({
   value,
   onChange,
   placeholder,
+  error,
   required,
 }: {
   label: string;
   type: string;
   value: string;
-  onChange: (v: string) => void;
+  onChange: (value: string) => void;
   placeholder: string;
+  error?: string;
   required?: boolean;
 }) {
   return (
     <div className="flex flex-col gap-2">
       <label className="font-mono text-[10px] uppercase tracking-[0.15em] text-silver-400">
-        {label}
+        {label} {required && <span className="text-cyan-300">*</span>}
       </label>
+
       <input
         type={type}
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
         required={required}
-        className="rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3 text-sm text-white placeholder:text-silver-600 transition-all duration-300 focus:border-cyan-400/40 focus:bg-cyan-500/[0.04] focus:outline-none focus:ring-2 focus:ring-cyan-400/15"
+        aria-invalid={Boolean(error)}
+        className={`rounded-xl border bg-white/[0.03] px-4 py-3 text-sm text-white placeholder:text-silver-600 transition-all duration-300 focus:bg-cyan-500/[0.04] focus:outline-none focus:ring-2 ${
+          error
+            ? "border-red-400/50 focus:border-red-400/60 focus:ring-red-400/15"
+            : "border-white/10 focus:border-cyan-400/40 focus:ring-cyan-400/15"
+        }`}
       />
+
+      {error && <p className="text-xs text-red-300">{error}</p>}
     </div>
   );
 }

@@ -1,4 +1,5 @@
 import Header from "@/components/Header";
+import WhatsAppButton from "@/components/WhatsAppButton";
 import Hero from "@/components/sections/Hero";
 import About from "@/components/sections/About";
 import Solutions from "@/components/sections/Solutions";
@@ -24,6 +25,7 @@ export default function Home() {
       </main>
 
       <Footer />
+      <WhatsAppButton />
     </div>
   );
 }

@@ -6,17 +6,17 @@ export const pillars: Pillar[] = [
   {
     icon: Target,
     title: 'Our Mission',
-    text: 'To engineer reliable, scalable software that turns ambitious ideas into products people love to use.',
+    text: 'To build reliable, scalable digital products that help businesses move from idea to launch with confidence.',
   },
   {
     icon: Eye,
     title: 'Our Vision',
-    text: 'A world where every business — regardless of size — has access to world-class engineering.',
+    text: 'To become a trusted software engineering partner for businesses that want to grow through well-built digital solutions.',
   },
   {
     icon: Sparkles,
     title: 'Why ICONIXCODE',
-    text: 'We exist to bridge the gap between design and engineering, shipping products that feel as good as they look.',
+    text: 'We combine clean design, strong engineering, and practical business thinking to build products that look good, work well, and scale.',
   },
 ];
 
