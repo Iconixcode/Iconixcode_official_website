@@ -198,8 +198,8 @@ export default function RootLayout({
   } as React.CSSProperties;
 
   return (
-    <html lang="en" style={themeStyle}>
-      <body className={spaceGrotesk.className}>
+    <html lang="en" style={themeStyle} suppressHydrationWarning>
+      <body className={spaceGrotesk.className} suppressHydrationWarning>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{

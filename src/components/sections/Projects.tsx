@@ -59,24 +59,34 @@ function ProjectCard({
         <div
           className={`relative h-44 shrink-0 overflow-hidden bg-gradient-to-br ${project.accent}`}
         >
-          <div className="absolute inset-0 bg-[linear-gradient(rgba(30,205,253,0.06)_1px,transparent_1px),linear-gradient(90deg,rgba(30,205,253,0.06)_1px,transparent_1px)] bg-[size:24px_24px] opacity-80 transition-opacity duration-300 group-hover:opacity-100" />
-
-          <div className="absolute inset-0 bg-cyan-400/[0.025] opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-
-          {/* Abstract wireframe shape */}
-          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-            <motion.div
-              animate={{ rotate: 360 }}
-              transition={{
-                duration: 30,
-                repeat: Infinity,
-                ease: "linear",
-              }}
-              className="h-24 w-24 rounded-lg border border-cyan-400/30 bg-cyan-400/[0.015] transition-all duration-300 [transform:rotateX(55deg)rotateZ(45deg)] group-hover:border-cyan-300/45 group-hover:bg-cyan-400/[0.035]"
+          {project.image ? (
+            <img
+              src={project.image}
+              alt={project.title}
+              className="h-full w-full object-cover"
             />
-          </div>
+          ) : (
+            <>
+              <div className="absolute inset-0 bg-[linear-gradient(rgba(30,205,253,0.06)_1px,transparent_1px),linear-gradient(90deg,rgba(30,205,253,0.06)_1px,transparent_1px)] bg-[size:24px_24px] opacity-80 transition-opacity duration-300 group-hover:opacity-100" />
 
-          <div className="absolute left-1/2 top-1/2 h-8 w-8 -translate-x-1/2 -translate-y-1/2 rounded-full bg-cyan-400/25 blur-2xl transition-all duration-300 group-hover:bg-cyan-300/35" />
+              <div className="absolute inset-0 bg-cyan-400/[0.025] opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+
+              {/* Abstract wireframe shape */}
+              <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+                <motion.div
+                  animate={{ rotate: 360 }}
+                  transition={{
+                    duration: 30,
+                    repeat: Infinity,
+                    ease: "linear",
+                  }}
+                  className="h-24 w-24 rounded-lg border border-cyan-400/30 bg-cyan-400/[0.015] transition-all duration-300 [transform:rotateX(55deg)rotateZ(45deg)] group-hover:border-cyan-300/45 group-hover:bg-cyan-400/[0.035]"
+                />
+              </div>
+
+              <div className="absolute left-1/2 top-1/2 h-8 w-8 -translate-x-1/2 -translate-y-1/2 rounded-full bg-cyan-400/25 blur-2xl transition-all duration-300 group-hover:bg-cyan-300/35" />
+            </>
+          )}
 
           {/* Category tag */}
           <span className="absolute left-4 top-4 rounded-full border border-white/15 bg-ink/50 px-3 py-1 font-mono text-[10px] uppercase tracking-wider text-cyan-200 backdrop-blur-md transition-all duration-300 group-hover:border-cyan-300/30 group-hover:bg-ink/70">

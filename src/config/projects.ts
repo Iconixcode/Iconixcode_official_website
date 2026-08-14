@@ -5,6 +5,7 @@ export type Project = {
   tags: string[];
   accent: string;
   link?: string;
+  image?: string;
 };
 
 export const projects: Project[] = [
@@ -15,6 +16,7 @@ export const projects: Project[] = [
     tags: ["Next.js"],
     accent: "from-cyan-500/20 to-navy-500/20",
     link: "https://ruhunu-fireworks.com",
+    image: "/ruhunufireworks.png",
   },
   {
     title: "BNP Photography",
@@ -23,6 +25,7 @@ export const projects: Project[] = [
     tags: ["Next.js", "Mapbox", "AWS"],
     accent: "from-navy-500/20 to-cyan-500/20",
     link: "https://bnpphotography.vercel.app/",
+    image: "/bnpphotography.png",
   },
   {
     title: "Rahal & Lalisha Wedding Website",
@@ -31,6 +34,7 @@ export const projects: Project[] = [
     tags: ["Next.js"],
     accent: "from-cyan-500/20 to-navy-500/20",
     link: "https://digital-wed-invitation.vercel.app/wedding",
+    image: "/r&lwedding.png",
   },
   {
     title: "Rahal & Lalisha Homecoming Website",
@@ -39,6 +43,7 @@ export const projects: Project[] = [
     tags: ["Next.js"],
     accent: "from-navy-500/20 to-cyan-500/20",
     link: "https://digital-wed-invitation.vercel.app/homecoming",
+    image: "/r&lhomecoming.png",
   },
 ];
 

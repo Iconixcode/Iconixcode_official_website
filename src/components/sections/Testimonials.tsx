@@ -9,7 +9,7 @@ import clients from "@/config/testimonials";
 const ARC_W = 320;
 const ARC_H = 500;
 const ARC_D = "M 170 100 A 150 150 0 0 0 190 400";
-const PULSE_DURATION_MS = 8000;
+const PULSE_DURATION_MS = 30000;
 
 const arcPoints = [
   { cx: 170, cy: 100 },
@@ -101,7 +101,7 @@ export default function Testimonials() {
                 strokeDasharray="14 600"
                 initial={{ strokeDashoffset: 0 }}
                 animate={{ strokeDashoffset: [0, -471] }}
-                transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+                transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
                 className="drop-shadow-[0_0_5px_rgba(30,205,253,0.9)]"
               />
             </svg>
