@@ -7,14 +7,7 @@ export type Client = {
 };
 
 export const clients: Client[] = [
-  {
-    name: "James Whitfield",
-    role: "Founder",
-    company: "MedLink",
-    initials: "JW",
-    quote:
-      "Working with Iconixcode felt like having a senior engineering co-founder embedded in our team. They understood our business goals, not just the technical requirements.",
-  },
+  
   {
     name: "Bhanuka Pandipperuma",
     role: "Founder",
