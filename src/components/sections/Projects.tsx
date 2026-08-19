@@ -1,11 +1,21 @@
 "use client";
 
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import SectionHeader from "@/components/SectionHeader";
 import projects from "@/config/projects";
 
+const categories = ["All", "Websites", "Wedding Invitations"];
+
 export default function Projects() {
+  const [selectedCategory, setSelectedCategory] = useState("All");
+
+  const filteredProjects =
+    selectedCategory === "All"
+      ? projects
+      : projects.filter((project) => project.category === selectedCategory);
+
   return (
     <section
       id="projects"
@@ -22,8 +32,25 @@ export default function Projects() {
           subtitle="A glimpse of products we’ve engineered across business dashboards, digital invitations, and custom web platforms."
         />
 
+        {/* Category Filter */}
+        <div className="mt-12 flex flex-wrap justify-center gap-3">
+          {categories.map((category) => (
+            <button
+              key={category}
+              onClick={() => setSelectedCategory(category)}
+              className={`px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-300 ${
+                selectedCategory === category
+                  ? "bg-cyan-500 text-white shadow-[0_0_20px_rgba(30,205,253,0.4)]"
+                  : "bg-white/[0.05] text-silver-300 border border-white/10 hover:border-cyan-400/30 hover:text-cyan-200"
+              }`}
+            >
+              {category}
+            </button>
+          ))}
+        </div>
+
         <div className="mt-16 grid items-stretch gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {projects.map((project, index) => (
+          {filteredProjects.map((project, index) => (
             <ProjectCard key={project.title} project={project} index={index} />
           ))}
         </div>

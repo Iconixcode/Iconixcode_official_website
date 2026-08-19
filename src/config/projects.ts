@@ -11,7 +11,7 @@ export type Project = {
 export const projects: Project[] = [
   {
     title: "Ruhunu Fireworks",
-    category: "Business Dashboard",
+    category: "Websites",
     desc: "A custom dashboard for managing fireworks inventory, sales records, and business operations in one place.",
     tags: ["Next.js"],
     accent: "from-cyan-500/20 to-navy-500/20",
@@ -20,7 +20,7 @@ export const projects: Project[] = [
   },
   {
     title: "BNP Photography",
-    category: "Studio Management",
+    category: "Websites",
     desc: "A digital platform for managing photography sessions, bookings, client details, and studio workflows.",
     tags: ["Next.js", "Mapbox", "AWS"],
     accent: "from-navy-500/20 to-cyan-500/20",
@@ -29,7 +29,7 @@ export const projects: Project[] = [
   },
   {
     title: "Rahal & Lalisha Wedding Website",
-    category: "Digital Invitation",
+    category: "Wedding Invitations",
     desc: "An elegant wedding invitation website with event details, location, countdown, RSVP, and guest-friendly interactions.",
     tags: ["Next.js"],
     accent: "from-cyan-500/20 to-navy-500/20",
@@ -38,7 +38,7 @@ export const projects: Project[] = [
   },
   {
     title: "Rahal & Lalisha Homecoming Website",
-    category: "Digital Invitation",
+    category: "Wedding Invitations",
     desc: "A personalized homecoming invitation website with modern visuals, event information, RSVP, countdown, and location details.",
     tags: ["Next.js"],
     accent: "from-navy-500/20 to-cyan-500/20",
